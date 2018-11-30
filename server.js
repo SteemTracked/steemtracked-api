@@ -1,4 +1,6 @@
-require('dotenv').config();
+// Only require dotenv config if in development mode
+if(process.env.NODE_ENV !== "production") require('dotenv').config();
+
 var express = require('express');
 var bodyParser = require('body-parser');
 global.__root   = __dirname + '/'; 
