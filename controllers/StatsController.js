@@ -246,8 +246,8 @@ router.get('/dtube/:username', function(req,res){
   })
 })
 
-// Get DLIVE
-router.get('/dlive/:username', function(req,res){
+// Get PARTIKO
+router.get('/partiko/:username', function(req,res){
   var sC = chooseConnection(connection, 4, 6);
   connection[sC].connect().then(function () {
     var request = new sql.Request(connection[sC]);
@@ -260,23 +260,23 @@ router.get('/dlive/:username', function(req,res){
         WHERE 
           "author" = @username AND
           "depth" = 0 AND
-          CONTAINS("json_metadata", ':dlive/') order by "created" DESC
+          "parent_permlink" = 'partiko' order by "created" DESC
       `
     ).then(function (result) {
-      var dlive = result.recordsets[0];
+      var partiko = result.recordsets[0];
 
-      var dliveData = {
-        posts_count: dlive.length,
+      var partikoData = {
+        posts_count: partiko.length,
         upvotes_count: 0,
         earnings_count: 0
       } 
 
-      for(var i = 0; i < dlive.length; i++){
-        dliveData.upvotes_count += dlive[i].net_votes;
-        dliveData.earnings_count += (parseFloat(dlive[i].total_payout_value)+parseFloat(dlive[i].pending_payout_value));
+      for(var i = 0; i < partiko.length; i++){
+        partikoData.upvotes_count += partiko[i].net_votes;
+        partikoData.earnings_count += (parseFloat(partiko[i].total_payout_value)+parseFloat(partiko[i].pending_payout_value));
       }
 
-      res.status(200).send(dliveData);
+      res.status(200).send(partikoData);
       connection[sC].close();
     }).catch(function(err){
       console.log(err);
