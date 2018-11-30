@@ -1,0 +1,16 @@
+### Node ###
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# dependencies
+/node_modules
+
+# misc
+package-lock.json*
+.DS_Store
+
+# Environemt Variables
+.env
